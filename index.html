@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-TRIX Code Executor</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+        }
+        .matrix {
+            color: #0F0;
+            font-family: monospace;
+            font-size: 12px;
+            position: absolute;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const fallingChars = [];
+        const columnCount = Math.floor(window.innerWidth / 12);
+
+        for(let i = 0; i < columnCount; i++) {
+            fallingChars[i] = [];
+            for(let j = 0; j < Math.random() * 20 + 5; j++) {
+                fallingChars[i].push(matrixChars.charAt(Math.floor(Math.random() * matrixChars.length)));
+            }
+        }
+
+        function drawMatrix() {
+            const matrixElement = document.createElement('div');
+            matrixElement.className = 'matrix';
+            document.body.appendChild(matrixElement);
+            for(let i = 0; i < columnCount; i++) {
+                const char = fallingChars[i].pop();
+                if (Math.random() < 0.1) {
+                    fallingChars[i].unshift(matrixChars.charAt(Math.floor(Math.random() * matrixChars.length)));
+                }
+                matrixElement.innerHTML += char ? char : "&nbsp;";
+            }
+            matrixElement.style.top = '0';
+            setTimeout(() => {
+                matrixElement.style.top = '100%';
+                setTimeout(() => matrixElement.remove(), 2000);
+            }, 16);
+        }
+
+        setInterval(drawMatrix, 50);
+    </script>
+</body>
+</html>
